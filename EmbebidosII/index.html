@@ -34,188 +34,7 @@ Author:
 <script src="js/highcharts.js"></script>
 <script src="js/data.js"></script>
 <script src="js/drilldown.js"></script>
-    
-    <script type="text/javascript">
-        
-        
-        if (window.openDatabase) {
-            var mydb = openDatabase("finance_db", "0.1", "SistemasEmbebidos", 1024 * 1024);
-            mydb.transaction(function (t) {
-                t.executeSql("CREATE TABLE IF NOT EXISTS cuentas (id INTEGER PRIMARY KEY ASC, nombre TEXT, monto INTEGER)");
-                t.executeSql("CREATE TABLE IF NOT EXISTS categorias (id INTEGER PRIMARY KEY ASC, nombre TEXT, monto INTEGER)");
-                t.executeSql("CREATE TABLE IF NOT EXISTS movimientos (id INTEGER PRIMARY KEY ASC, cuenta INTEGER, monto INTEGER, categoria TEXT, beneficiario TEXT, destinatario INTEGER, descripcion TEXT)");
-                t.executeSql("IF (SELECT * FROM categorias <= 0) BEGIN INSERT INTO categorias (nombre, monto) VALUES (?, ?) END", ["comida", 0]);
-                t.executeSql("IF (SELECT * FROM categorias <= 0) BEGIN INSERT INTO categorias (nombre, monto) VALUES (?, ?) END", ["despensa", 0]);
-                t.executeSql("IF (SELECT * FROM categorias <= 0) BEGIN INSERT INTO categorias (nombre, monto) VALUES (?, ?) END", ["educacion", 0]);
-                t.executeSql("IF (SELECT * FROM categorias <= 0) BEGIN INSERT INTO categorias (nombre, monto) VALUES (?, ?) END", ["entretenimiento",0]);
-                t.executeSql("IF (SELECT * FROM categorias <= 0) BEGIN INSERT INTO categorias (nombre, monto) VALUES (?, ?) END", ["impuesto", 0]);
-                t.executeSql("IF (SELECT * FROM categorias <= 0) BEGIN INSERT INTO categorias (nombre, monto) VALUES (?, ?) END", ["mascota", 0]);
-                t.executeSql("IF (SELECT * FROM categorias <= 0) BEGIN INSERT INTO categorias (nombre, monto) VALUES (?, ?) END", ["regalos", 0]);
-                t.executeSql("IF (SELECT * FROM categorias <= 0) BEGIN INSERT INTO categorias (nombre, monto) VALUES (?, ?) END", ["salud", 0]);
-                t.executeSql("IF (SELECT * FROM categorias <= 0) BEGIN INSERT INTO categorias (nombre, monto) VALUES (?, ?) END", ["servicios",0]);
-                t.executeSql("IF (SELECT * FROM categorias <= 0) BEGIN INSERT INTO categorias (nombre, monto) VALUES (?, ?) END", ["transporte", 0]);
-                t.executeSql("IF (SELECT * FROM categorias <= 0) BEGIN INSERT INTO categorias (nombre, monto) VALUES (?, ?) END", ["vestimenta", 0]);
-                t.executeSql("IF (SELECT * FROM categorias <= 0) BEGIN INSERT INTO categorias (nombre, monto) VALUES (?, ?) END", ["viajes",0]);
-                t.executeSql("IF (SELECT * FROM categorias <= 0) BEGIN INSERT INTO categorias (nombre, monto) VALUES (?, ?) END", ["otros", 0]);
-             });
 
-        } else {
-            alert("Lo sentimos. El sistema de datos no es compatible con su dispositivo.");
-        }
-        
-
-        function updateList(transaction, results) {
-            var listitems = "";
-            var listholder = document.getElementById("listacuentas");
-
-            listholder.innerHTML = "";
-
-            var i;
-            for (i = 0; i < results.rows.length; i++) {
-                var row = results.rows.item(i);
-                
-                listholder.innerHTML += "<tr><td>" + row.id + "</td><td>" + row.nombre + "</td><td> $ " + row.monto + "</td><td><a href='javascript:void(0);' onclick='borrarCuenta(" + row.id + ");' >Borrar Cuenta</a></td></tr>";
-            }
-
-        }
-
-
-        function output() {
-            if (mydb) {
-                mydb.transaction(function (t) {
-                    t.executeSql("SELECT * FROM cuentas", [], updateList);
-                });
-            } else {
-                alert("Datos no encontrados");
-            }
-        }
-
-
-        function agregarCuenta() {
-            if (mydb) {
-                var nombre = document.getElementById("cuentanombre").value;
-                var monto = document.getElementById("cuentamonto").value;
-
-                if (nombre !== "" && monto !== "") {
-                    mydb.transaction(function (t) {
-                        t.executeSql("INSERT INTO cuentas (nombre, monto) VALUES (?, ?)", [nombre, monto]);
-                        output();
-                        
-                    });
-                    
-                } else {
-                    alert("Por favor ingrese algun dato");
-                }
-            } else {
-                alert("Datos no encontrados");
-            }
-        }
-
-
-        function borrarCuenta(id) {
-            if (mydb) {
-                mydb.transaction(function (t) {
-                    t.executeSql("DELETE FROM cuentas WHERE id=?", [id], output);
-                });
-            } else {
-                alert("Datos no encontrados");
-            }
-        }
-
-        output();
-        
-        function actualizarFormulario(){
-    		var movimiento=document.getElementById("tipo").value;
-             if (movimiento == "ingreso"){
-                document.getElementById("beneficiario").hidden=false;
-                document.getElementById("destinatario").style.display="none";
-                document.getElementById("labelDestinatario").style.display="none";
-                document.getElementById("categoria").style.display="none";
-                document.getElementById("labelCategoria").style.display="none";
-            }else{
-                if (movimiento == "gasto"){
-                    document.getElementById("beneficiario").hidden=false;
-                    document.getElementById("destinatario").style.display="none";
-                    document.getElementById("labelDestinatario").style.display="none";
-                    document.getElementById("categoria").style.display="block";
-                    document.getElementById("labelCategoria").style.display="block";
-                }else{
-                    document.getElementById("beneficiario").hidden=true;
-                    document.getElementById("destinatario").style.display="block";
-                    document.getElementById("labelDestinatario").style.display="block";
-                    document.getElementById("categoria").style.display="none";
-                	document.getElementById("labelCategoria").style.display="none";
-                }
-            }
-        }
-        
-        function guardarMovimiento() {
-            var movimiento = document.getElementById("tipo").value;
-            var mmonto = document.getElementById("cantidad").value;
-            var mbeneficiario = document.getElementById("beneficiario").value;
-            var mcuenta = document.getElementById("cuenta").value;
-            var mdestinatario = document.getElementById("destinatario").value;
-            var mcategoria = document.getElementById("categoria").value;
-            var mdescripcion = document.getElementById("descripcion").value;
-            if (movimiento == "ingreso"){  
-            
-            }
-            if (movimiento == "gasto"){
-                
-            }
-            if (movimiento == "transferencia"){
-                
-            }
-        }
-        
-        function actualizarListaCuentas(transaction, results) {
-            var listholder = document.getElementById("cuenta");
-            listholder.innerHTML = "";
-
-            var i;
-            for (i = 0; i < results.rows.length; i++) {
-                var row = results.rows.item(i);
-                
-                listholder.innerHTML += '<option value = " ' + row.nombre + ' "> ' + row.nombre + '</option>';
-            }
-            
-            listholder = document.getElementById("destinatario");
-            listholder.innerHTML = "";
-
-            var i;
-            for (i = 0; i < results.rows.length; i++) {
-                row = results.rows.item(i);
-                
-                listholder.innerHTML += '<option value = " ' + row.nombre + ' "> ' + row.nombre + '</option>';
-            }
-
-        }
-
-		function actualizarListaCategorias(transaction, results) {
-            var listholder = document.getElementById("categoria");
-            listholder.innerHTML = "";
-            var i;
-            for (i = 0; i < results.rows.length; i++) {
-                var row = results.rows.item(i);
-                
-                listholder.innerHTML += '<option value = " ' + row.nombre + ' "> ' + row.nombre + '</option>';
-            }
-        }
-        
-        
-        function actualizarListas() {
-            if (mydb) {
-                mydb.transaction(function (t) {
-                    t.executeSql("SELECT * FROM cuentas", [], actualizarListaCuentas);
-                    t.executeSql("SELECT * FROM categorias", [], actualizarListaCategorias);
-                });
-            } else {
-                alert("Datos no encontrados");
-            }
-        }
-    
-      </script>
-    
 <!-- JS -->
 
 </head>
@@ -414,5 +233,185 @@ Author:
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="js/bootstrap.min.js"></script>
           <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
+    <script type="text/javascript">
+        
+        
+        if (window.openDatabase) {
+            var mydb = openDatabase("finance_db", "0.1", "SistemasEmbebidos", 1024 * 1024);
+            mydb.transaction(function (t) {
+                t.executeSql("CREATE TABLE cuentas (id INTEGER PRIMARY KEY ASC, nombre TEXT, monto INTEGER)");
+                t.executeSql("CREATE TABLE categorias (id INTEGER PRIMARY KEY ASC, nombre TEXT, monto INTEGER)");
+                t.executeSql("CREATE TABLE movimientos (id INTEGER PRIMARY KEY ASC, cuenta INTEGER, monto INTEGER, categoria TEXT, beneficiario TEXT, destinatario INTEGER, descripcion TEXT)");
+                t.executeSql("INSERT INTO categorias (nombre, monto) VALUES (?, ?) ", ["comida", 0]);
+                t.executeSql("INSERT INTO categorias (nombre, monto) VALUES (?, ?) ", ["despensa", 0]);
+                t.executeSql("INSERT INTO categorias (nombre, monto) VALUES (?, ?) ", ["educacion", 0]);
+                t.executeSql("INSERT INTO categorias (nombre, monto) VALUES (?, ?) ", ["entretenimiento",0]);
+                t.executeSql("INSERT INTO categorias (nombre, monto) VALUES (?, ?) ", ["impuesto", 0]);
+                t.executeSql("INSERT INTO categorias (nombre, monto) VALUES (?, ?) ", ["mascota", 0]);
+                t.executeSql("INSERT INTO categorias (nombre, monto) VALUES (?, ?) ", ["regalos", 0]);
+                t.executeSql("INSERT INTO categorias (nombre, monto) VALUES (?, ?) ", ["salud", 0]);
+                t.executeSql("INSERT INTO categorias (nombre, monto) VALUES (?, ?) ", ["servicios",0]);
+                t.executeSql("INSERT INTO categorias (nombre, monto) VALUES (?, ?) ", ["transporte", 0]);
+                t.executeSql("INSERT INTO categorias (nombre, monto) VALUES (?, ?) ", ["vestimenta", 0]);
+                t.executeSql("INSERT INTO categorias (nombre, monto) VALUES (?, ?) ", ["viajes",0]);
+                t.executeSql("INSERT INTO categorias (nombre, monto) VALUES (?, ?) ", ["otros", 0]);
+             });
+
+        } else {
+            alert("Lo sentimos. El sistema de datos no es compatible con su dispositivo.");
+        }
+        
+
+        function updateList(transaction, results) {
+            var listitems = "";
+            var listholder = document.getElementById("listacuentas");
+
+            listholder.innerHTML = "";
+
+            var i;
+            for (i = 0; i < results.rows.length; i++) {
+                var row = results.rows.item(i);
+                
+                listholder.innerHTML += "<tr><td>" + row.id + "</td><td>" + row.nombre + "</td><td> $ " + row.monto + "</td><td><a href='javascript:void(0);' onclick='borrarCuenta(" + row.id + ");' >Borrar Cuenta</a></td></tr>";
+            }
+
+        }
+
+
+        function output() {
+            if (mydb) {
+                mydb.transaction(function (t) {
+                    t.executeSql("SELECT * FROM cuentas", [], updateList);
+                });
+            } else {
+                alert("Datos no encontrados");
+            }
+        }
+
+
+        function agregarCuenta() {
+            if (mydb) {
+                var nombre = document.getElementById("cuentanombre").value;
+                var monto = document.getElementById("cuentamonto").value;
+
+                if (nombre !== "" && monto !== "") {
+                    mydb.transaction(function (t) {
+                        t.executeSql("INSERT INTO cuentas (nombre, monto) VALUES (?, ?)", [nombre, monto]);
+                        output();
+                        
+                    });
+                    
+                } else {
+                    alert("Por favor ingrese algun dato");
+                }
+            } else {
+                alert("Datos no encontrados");
+            }
+        }
+
+
+        function borrarCuenta(id) {
+            if (mydb) {
+                mydb.transaction(function (t) {
+                    t.executeSql("DELETE FROM cuentas WHERE id=?", [id], output);
+                });
+            } else {
+                alert("Datos no encontrados");
+            }
+        }
+
+        output();
+        
+        function actualizarFormulario(){
+    		var movimiento=document.getElementById("tipo").value;
+             if (movimiento == "ingreso"){
+                document.getElementById("beneficiario").hidden=false;
+                document.getElementById("destinatario").style.display="none";
+                document.getElementById("labelDestinatario").style.display="none";
+                document.getElementById("categoria").style.display="none";
+                document.getElementById("labelCategoria").style.display="none";
+            }else{
+                if (movimiento == "gasto"){
+                    document.getElementById("beneficiario").hidden=false;
+                    document.getElementById("destinatario").style.display="none";
+                    document.getElementById("labelDestinatario").style.display="none";
+                    document.getElementById("categoria").style.display="block";
+                    document.getElementById("labelCategoria").style.display="block";
+                }else{
+                    document.getElementById("beneficiario").hidden=true;
+                    document.getElementById("destinatario").style.display="block";
+                    document.getElementById("labelDestinatario").style.display="block";
+                    document.getElementById("categoria").style.display="none";
+                	document.getElementById("labelCategoria").style.display="none";
+                }
+            }
+        }
+        
+        function guardarMovimiento() {
+            var movimiento = document.getElementById("tipo").value;
+            var mmonto = document.getElementById("cantidad").value;
+            var mbeneficiario = document.getElementById("beneficiario").value;
+            var mcuenta = document.getElementById("cuenta").value;
+            var mdestinatario = document.getElementById("destinatario").value;
+            var mcategoria = document.getElementById("categoria").value;
+            var mdescripcion = document.getElementById("descripcion").value;
+            if (movimiento == "ingreso"){  
+            
+            }
+            if (movimiento == "gasto"){
+                
+            }
+            if (movimiento == "transferencia"){
+                
+            }
+        }
+        
+        function actualizarListaCuentas(transaction, results) {
+            var listholder = document.getElementById("cuenta");
+            listholder.innerHTML = "";
+
+            var i;
+            for (i = 0; i < results.rows.length; i++) {
+                var row = results.rows.item(i);
+                
+                listholder.innerHTML += '<option value = " ' + row.nombre + ' "> ' + row.nombre + '</option>';
+            }
+            
+            listholder = document.getElementById("destinatario");
+            listholder.innerHTML = "";
+
+            var i;
+            for (i = 0; i < results.rows.length; i++) {
+                row = results.rows.item(i);
+                
+                listholder.innerHTML += '<option value = " ' + row.nombre + ' "> ' + row.nombre + '</option>';
+            }
+
+        }
+
+		function actualizarListaCategorias(transaction, results) {
+            var listholder = document.getElementById("categoria");
+            listholder.innerHTML = "";
+            var i;
+            for (i = 0; i < results.rows.length; i++) {
+                var row = results.rows.item(i);
+                
+                listholder.innerHTML += '<option value = " ' + row.nombre + ' "> ' + row.nombre + '</option>';
+            }
+        }
+        
+        
+        function actualizarListas() {
+            if (mydb) {
+                mydb.transaction(function (t) {
+                    t.executeSql("SELECT * FROM cuentas", [], actualizarListaCuentas);
+                    t.executeSql("SELECT * FROM categorias", [], actualizarListaCategorias);
+                });
+            } else {
+                alert("Datos no encontrados");
+            }
+        }
+    
+      </script>
   </body>
 </html>

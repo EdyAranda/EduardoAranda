@@ -28,37 +28,6 @@ Author:
 <script src="js/highcharts.js"></script>
 <script src="js/data.js"></script>
 <script src="js/drilldown.js"></script>
-    
-    <script type="text/javascript">
-        
-        function updateList(transaction, results) {
-            var listitems = "";
-            var listholder = document.getElementById("listacategorias");
-
-            listholder.innerHTML = "";
-
-            var i;
-            for (i = 0; i < results.rows.length; i++) {
-                var row = results.rows.item(i);
-                
-                listholder.innerHTML += "<tr><td>" + row.id + "</td><td>" + row.nombre + "</td><td> $ " + row.monto + "</td></tr>";
-            }
-
-        }
-
-        function output() {
-            if (mydb) {
-                mydb.transaction(function (t) {
-                    t.executeSql("SELECT * FROM categorias", [], updateList);
-                });
-            } else {
-                alert("Datos no encontrados");
-            }
-        }
-
-        output();
-    </script>
-    
 <!-- JS -->
     
 </head>
@@ -206,5 +175,39 @@ Author:
             <!-- Placed at the end of the document so the pages load faster -->
             <script src="js/bootstrap.min.js"></script>
             <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
+      		<script type="text/javascript">
+        if (window.openDatabase) {
+            var mydb = openDatabase("finance_db", "0.1", "SistemasEmbebidos", 1024 * 1024);
+        } else {
+            alert("Lo sentimos. El sistema de datos no es compatible con su dispositivo.");
+        }
+        
+        function updateList(transaction, results) {
+            var listitems = "";
+            var listholder = document.getElementById("listacategorias");
+
+            listholder.innerHTML = "";
+
+            var i;
+            for (i = 0; i < results.rows.length; i++) {
+                var row = results.rows.item(i);
+                
+                listholder.innerHTML += "<tr><td>" + row.id + "</td><td>" + row.nombre + "</td><td> $ " + row.monto + "</td></tr>";
+            }
+
+        }
+
+        function output() {
+            if (mydb) {
+                mydb.transaction(function (t) {
+                    t.executeSql("SELECT * FROM categorias", [], updateList);
+                });
+            } else {
+                alert("Datos no encontrados");
+            }
+        }
+
+        output();
+    </script>
       </body>
 </html>
