@@ -21,6 +21,12 @@ Author:
 <link href="css/style.css" rel='stylesheet' type='text/css' media="all" />
 <link href='css/openSans.css' rel='stylesheet' type='text/css'>
 <link href='css/poiret.css' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" type="text/css" href="css/normalize.css" />
+<link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.2.0/css/font-awesome.min.css" />
+<link rel="stylesheet" type="text/css" href="css/demo.css" />
+<link rel="stylesheet" type="text/css" href="css/set2.css" />
+<link rel="stylesheet" type="text/css" href="css/default.css" />
+<link rel="stylesheet" type="text/css" href="css/component.css" />
 <!-- CSS -->
 
 <!-- JS -->
@@ -52,8 +58,8 @@ Author:
             var i;
             for (i = 0; i < results.rows.length; i++) {
                 var row = results.rows.item(i);
-
-                listholder.innerHTML += "<li>" + row.nombre + " - " + row.monto + " (<a href='javascript:void(0);' onclick='borrarCuenta(" + row.id + ");'>Borrar Cuenta</a>)";
+                
+                listholder.innerHTML += "<tr><td>" + row.id + "</td><td>" + row.nombre + "</td><td> $ " + row.monto + "</td><td><a href='javascript:void(0);' onclick='borrarCuenta(" + row.id + ");' >Borrar Cuenta</a></td></tr>";
             }
 
         }
@@ -140,20 +146,83 @@ Author:
 			<div class="main-grids">
 				<div class="top-grids">
 					<div class="recommended-info">
-						<h3>Cuentas</h3>
+						<h2>Cuentas</h2>
                         <div id="controls">
-                            <p>Agregar una cuenta</p>
-                            <label>Nombre:</label>
-                            <input type="text" id="cuentanombre" />
-                            <br />
-                            <label>Monto:</label>
-                            <input type="text" id="cuentamonto" />
-                            <br />
-                            <button type="button" id="agregar" onclick="agregarCuenta();">Agregar Cuenta</button>
+                        	<div class="container">
+								<section class="content" style="padding-top: 3px;padding-right: 3px;padding-bottom: 3px;padding-left: 3px;">
+									<br>
+		                            <h3 style="margin-bottom: 10px;">Agregar una cuenta</h3>
+		                            <span class="input input--nariko" style="margin-left: 0px;margin-top: 0px;margin-right: 0px;margin-bottom: 0px;">
+										<input class="input__field input__field--nariko" type="text" id="cuentanombre" />
+										<label class="input__label input__label--nariko" for="cuentanombre">
+											<span class="input__label-content input__label-content--nariko">Nombre</span>
+										</label>
+									</span>
+		                            <br />
+		                            <span class="input input--nariko" style="margin-top: 0px;margin-right: 0px;margin-bottom: 0px;margin-left: 0px;">
+										<input class="input__field input__field--nariko" type="number" id="cuentamonto" />
+										<label class="input__label input__label--nariko" for="cuentamonto">
+											<span class="input__label-content input__label-content--nariko">Monto</span>
+										</label>
+									</span>
+		                            <br/>
+		                            <br />
+										<button class="btn btn-2 btn-2h" style="padding-top: 10px;padding-bottom: 10px;padding-right: 30px;padding-left: 30px;margin-right: 5px;margin-bottom: 5px;margin-top: 5px;margin-left: 5px;" id="agregar" onclick="agregarCuenta();">Agregar</button>
+		                            <br/>
+	                            </section>
+                           	</div>
                         </div>
+                        <script src="js/classie.js"></script>
+						<script>
+							(function() {
+								// trim polyfill : https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/Trim
+								if (!String.prototype.trim) {
+									(function() {
+										// Make sure we trim BOM and NBSP
+										var rtrim = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g;
+										String.prototype.trim = function() {
+											return this.replace(rtrim, '');
+										};
+									})();
+								}
+
+								[].slice.call( document.querySelectorAll( 'input.input__field' ) ).forEach( function( inputEl ) {
+									// in case the input is already filled..
+									if( inputEl.value.trim() !== '' ) {
+										classie.add( inputEl.parentNode, 'input--filled' );
+									}
+
+									// events:
+									inputEl.addEventListener( 'focus', onInputFocus );
+									inputEl.addEventListener( 'blur', onInputBlur );
+								} );
+
+								function onInputFocus( ev ) {
+									classie.add( ev.target.parentNode, 'input--filled' );
+								}
+
+								function onInputBlur( ev ) {
+									if( ev.target.value.trim() === '' ) {
+										classie.remove( ev.target.parentNode, 'input--filled' );
+									}
+								}
+							})();
+						</script>
                         <div id="holder">
-                             <h3>Tus Cuentas</h3>
-                            <ul id="listacuentas"></ul>
+                        	<br>
+                            <h2>Tus Cuentas</h2>
+                            <br>
+                            <table width="50%">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Cuenta</th>
+                                        <th>Saldo</th>
+                                        <th>Opciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="listacuentas"></tbody>
+                            </table>
                         </div>
       
 					</div>
