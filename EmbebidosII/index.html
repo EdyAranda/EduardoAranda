@@ -42,6 +42,8 @@ Author:
             var mydb = openDatabase("finance_db", "0.1", "SistemasEmbebidos", 1024 * 1024);
             mydb.transaction(function (t) {
                 t.executeSql("CREATE TABLE IF NOT EXISTS cuentas (id INTEGER PRIMARY KEY ASC, nombre TEXT, monto INTEGER)");
+                t.executeSql("CREATE TABLE IF NOT EXISTS categorias (id INTEGER PRIMARY KEY ASC, nombre TEXT, monto INTEGER)");
+                t.executeSql("CREATE TABLE IF NOT EXISTS movimientos (id INTEGER PRIMARY KEY ASC, cuenta INTEGER, monto INTEGER, categoria TEXT, beneficiario TEXT, destinatario INTEGER, descripcion TEXT)");
             });
 
         } else {

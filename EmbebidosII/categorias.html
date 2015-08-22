@@ -23,6 +23,55 @@ Author:
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
 <link href='http://fonts.googleapis.com/css?family=Poiret+One' rel='stylesheet' type='text/css'>
 <!-- //fonts -->
+    
+<!-- JS -->
+<script src="js/highcharts.js"></script>
+<script src="js/data.js"></script>
+<script src="js/drilldown.js"></script>
+    
+    <script type="text/javascript">
+        
+        
+        if (window.openDatabase) {
+            var mydb = openDatabase("finance_db", "0.1", "SistemasEmbebidos", 1024 * 1024);
+            mydb.transaction(function (t) {
+                t.executeSql("CREATE TABLE IF NOT EXISTS cuentas (id INTEGER PRIMARY KEY ASC, nombre TEXT, monto INTEGER)");
+            });
+
+        } else {
+            alert("Lo sentimos. El sistema de datos no es compatible con su dispositivo.");
+        }
+        
+        function actualizarFormulario(){
+    		var movimiento=document.getElementById("tipo").value;
+            if (movimiento !== "transferencia"){
+                document.getElementById("beneficiario").hidden=false;
+                document.getElementById("destinatario").style.display="none";
+                document.getElementById("labelDestinatario").style.display="none";
+            }else{
+                document.getElementById("beneficiario").hidden=true;
+                document.getElementById("destinatario").style.display="block";
+                document.getElementById("labelDestinatario").style.display="block";
+            }
+        }
+        
+        function guardarMovimiento(){
+            var movimiento=document.getElementById("tipo").value;
+            if (movimiento == "ingreso"){
+            
+            }
+            if (movimiento == "gasto"){
+                
+            }
+            if (movimiento == "transferencia"){
+                
+            }
+        }
+        
+    </script>
+    
+<!-- JS -->
+    
 </head>
   <body>
               <<div class="col-sm-3 col-md-2 sidebar">
@@ -66,48 +115,41 @@ Author:
                                                     <h3>Registrar Movimiento </h3>                                   
                                                     <div class="signup">
                                                         <form>
-                                                            <ul id="Tipo">
-                                                                <li class="languages">
-                                                                    <select class="form-control bfh-countries" data-country="US">
-                                                                        <option value="">Tipo</option>
-                                                                        <option>Ingreso</option>
-                                                                        <option>Gasto</option>
-                                                                        <option>Transaccion</option>
+                                                            <label for="tipo">Tipo: </label>
+                                                                     <select id="tipo" onchange="actualizarFormulario();">
+                                                                        <option value="ingreso">Ingreso</option>
+                                                                        <option value="gasto">Gasto</option>
+                                                                        <option value="transferencia">Transferencia</option>
                                                                     </select>
-                                                                </li>
-                                                            </ul>
-                                                            <input type="text" class="email" placeholder="Beneficiario" maxlength="30"/>
-                                                            <input type="text" class="email" placeholder="Importe" maxlength="10" pattern="[1-9]{1}\d{9}" title="Enter a valid number" />
-                                                            <ul id="Categoria">
-                                                                <li class="languages">
-                                                                    <select class="form-control bfh-countries" data-country="US">
-                                                                        <option value="">Categorias</option>
-                                                                        <option>Transporte</option>
-                                                                        <option>Vestimenta</option>
-                                                                        <option>Comida</option>
-                                                                        <option>Educacion</option>
-                                                                        <option>Entretenimiento</option>
-                                                                        <option>Regalos</option>
-                                                                        <option>Despensa</option>
-                                                                        <option>Salud</option>
-                                                                        <option>Mascota</option>
-                                                                        <option>Impuesto</option>
-                                                                        <option>Viajes</option>
-                                                                        <option>Servicios</option>
-                                                                        <option>Otros</option>
+                                                            <input type="text" class="email" placeholder="Beneficiario" maxlength="30" id="beneficiario"/>
+                                                            <input type="text" class="email" placeholder="Cantidad" maxlength="10" pattern="[1-9]{1}\d{9}" title="Ingresa un numero valido" id="cantidad" />
+                                                            <label for="categoria">Categoria: </label>
+                                                                     <select id="categoria">
+                                                                        <option value="transporte">Transporte</option>
+                                                                        <option value="vestimenta">Vestimenta</option>
+                                                                        <option value="comida">Comida</option>
+                                                                        <option value="educacion">Educacion</option>
+                                                                        <option value="entretenimiento">Entretenimiento</option>
+                                                                        <option value="regalos">Regalos</option>
+                                                                        <option value="despensa">Despensa</option>
+                                                                        <option value="salud">Salud</option>
+                                                                        <option value="mascota">Mascota</option>
+                                                                        <option value="impuesto">Impuesto</option>
+                                                                        <option value="viajes">Viajes</option>
+                                                                        <option value="servicios">Servicios</option>
+                                                                        <option value="otros">Otros</option>
                                                                     </select>
-                                                                </li>
-                                                            </ul>
-                                                           <ul id="Cuenta">
-                                                                <li class="languages">
-                                                                    <select class="form-control bfh-countries" data-country="US">
-                                                                        <option value="">Cuenta</option>
-                                                                        <option>Cartera</option>
-                                                                        <option>Ahorros</option>
-                                                                        <option>Otra</option>
+                                                            <br>
+                                                                <label for="cuenta">Cuenta: </label>
+                                                                     <select id="cuenta">
+                                                                        <option value="">      </option>
                                                                     </select>
-                                                                </li>
-                                                            </ul>
+                                                            <br>
+                                                                <label id="labelDestinatario" for="destinatario" style="display: none;">Destinatario: </label>
+                                                                     <select id="destinatario" style="display: none;">
+                                                                        <option value="">    </option>
+                                                            		</select>
+                                                            <br>
                                                            <input type="text" class="email" placeholder="Descripcion" maxlength="200"/> 
                                                         </form>
 
