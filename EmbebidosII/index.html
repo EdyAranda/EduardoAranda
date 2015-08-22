@@ -109,10 +109,6 @@ Author:
             } else {
                 alert("Datos no encontrados");
             }
-            var listaCuenta = document.getElementById("cuenta");
-                    listaCuenta.innerHTML += '<option value = " ' + nombre + ' "> ' + nombre + '</option>';
-            listaCuenta = document.getElementById("destinatario");
-                    listaCuenta.innerHTML += '<option value = " ' + nombre + ' "> ' + nombre + '</option>';
         }
 
 
@@ -128,22 +124,40 @@ Author:
 
         output();
         
-       function actualizarFormulario(){
+        function actualizarFormulario(){
     		var movimiento=document.getElementById("tipo").value;
-            if (movimiento !== "transferencia"){
+             if (movimiento == "ingreso"){
                 document.getElementById("beneficiario").hidden=false;
                 document.getElementById("destinatario").style.display="none";
                 document.getElementById("labelDestinatario").style.display="none";
+                document.getElementById("categoria").style.display="none";
+                document.getElementById("labelCategoria").style.display="none";
             }else{
-                document.getElementById("beneficiario").hidden=true;
-                document.getElementById("destinatario").style.display="block";
-                document.getElementById("labelDestinatario").style.display="block";
+                if (movimiento == "gasto"){
+                    document.getElementById("beneficiario").hidden=false;
+                    document.getElementById("destinatario").style.display="none";
+                    document.getElementById("labelDestinatario").style.display="none";
+                    document.getElementById("categoria").style.display="block";
+                    document.getElementById("labelCategoria").style.display="block";
+                }else{
+                    document.getElementById("beneficiario").hidden=true;
+                    document.getElementById("destinatario").style.display="block";
+                    document.getElementById("labelDestinatario").style.display="block";
+                    document.getElementById("categoria").style.display="none";
+                	document.getElementById("labelCategoria").style.display="none";
+                }
             }
         }
         
         function guardarMovimiento(){
-            var movimiento=document.getElementById("tipo").value;
-            if (movimiento == "ingreso"){
+            var movimiento = document.getElementById("tipo").value;
+            var mmonto = document.getElementById("cantidad").value;
+            var mbeneficiario = document.getElementById("beneficiario").value;
+            var mcuenta = document.getElementById("cuenta").value;
+            var mdestinatario = document.getElementById("destinatario").value;
+            var mcategoria = document.getElementById("categoria").value;
+            var mdescripcion = document.getElementById("descripcion").value;
+            if (movimiento == "ingreso"){  
             
             }
             if (movimiento == "gasto"){
@@ -151,6 +165,57 @@ Author:
             }
             if (movimiento == "transferencia"){
                 
+            }
+        }
+        
+        function actualizarListaCuentas(transaction, results) {
+            var listitems = "";
+            var listholder = document.getElementById("cuenta");
+
+            listholder.innerHTML = "";
+
+            var i;
+            for (i = 0; i < results.rows.length; i++) {
+                var row = results.rows.item(i);
+                
+                listholder.innerHTML += '<option value = " ' + row.nombre + ' "> ' + row.nombre + '</option>';
+            }
+            listholder = document.getElementById("destinatario");
+
+            listholder.innerHTML = "";
+
+            var i;
+            for (i = 0; i < results.rows.length; i++) {
+                row = results.rows.item(i);
+                
+                listholder.innerHTML += '<option value = " ' + row.nombre + ' "> ' + row.nombre + '</option>';
+            }
+
+        }
+
+		function actualizarListaCategorias(transaction, results) {
+            var listitems = "";
+            var listholder = document.getElementById("categoria");
+
+            listholder.innerHTML = "";
+
+            var i;
+            for (i = 0; i < results.rows.length; i++) {
+                var row = results.rows.item(i);
+                
+                listholder.innerHTML += '<option value = " ' + row.nombre + ' "> ' + row.nombre + '</option>';
+            }
+        }
+        
+        
+        function actualizarListas() {
+            if (mydb) {
+                mydb.transaction(function (t) {
+                    t.executeSql("SELECT * FROM cuentas", [], actualizarListaCuentas);
+                    t.executeSql("SELECT * FROM categorias", [], actualizarListaCategorias);
+                });
+            } else {
+                alert("Datos no encontrados");
             }
         }
     
@@ -192,7 +257,7 @@ Author:
                         </div>
                 </div>
                             <div class="signin">
-                                <a href="#small-dialog2" class="play-icon popup-with-zoom-anim">Nuevo Movimiento</a>
+                                <a href="#small-dialog2" class="play-icon popup-with-zoom-anim" onclick="actualizarListas()">Nuevo Movimiento</a>
                                 <!-- pop-up-box -->
                                                 <script type="text/javascript" src="js/modernizr.custom.min.js"></script>    
                                                 <link href="css/popuo-box.css" rel="stylesheet" type="text/css" media="all" />
@@ -212,19 +277,7 @@ Author:
                                                             <input type="text" class="email" placeholder="Cantidad" maxlength="10" pattern="[1-9]{1}\d{9}" title="Ingresa un numero valido" id="cantidad" />
                                                             <label for="categoria">Categoria: </label>
                                                                      <select id="categoria">
-                                                                        <option value="transporte">Transporte</option>
-                                                                        <option value="vestimenta">Vestimenta</option>
-                                                                        <option value="comida">Comida</option>
-                                                                        <option value="educacion">Educacion</option>
-                                                                        <option value="entretenimiento">Entretenimiento</option>
-                                                                        <option value="regalos">Regalos</option>
-                                                                        <option value="despensa">Despensa</option>
-                                                                        <option value="salud">Salud</option>
-                                                                        <option value="mascota">Mascota</option>
-                                                                        <option value="impuesto">Impuesto</option>
-                                                                        <option value="viajes">Viajes</option>
-                                                                        <option value="servicios">Servicios</option>
-                                                                        <option value="otros">Otros</option>
+                                                                        <option value="">   </option>
                                                                     </select>
                                                             <br>
                                                                 <label for="cuenta">Cuenta: </label>
