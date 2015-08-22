@@ -1,0 +1,45 @@
+{
+  "ProjectName": "EmbebidosII",
+  "ProjectGuid": "4d63abee-2c48-4bc1-b47e-da82ca1c52cd",
+  "projectVersion": 1,
+  "AppIdentifier": "com.telerik.EmbebidosII",
+  "DisplayName": "EmbebidosII",
+  "Author": "",
+  "Description": "EmbebidosII",
+  "BundleVersion": "1.0",
+  "AndroidVersionCode": "1",
+  "iOSDeviceFamily": [
+    "1",
+    "2"
+  ],
+  "iOSBackgroundMode": [],
+  "ProjectTypeGuids": "{070BCB52-5A75-4F8C-A973-144AF0EAFCC9}",
+  "FrameworkVersion": "3.7.0",
+  "AndroidPermissions": [
+    "android.permission.INTERNET"
+  ],
+  "DeviceOrientations": [
+    "Portrait",
+    "Landscape"
+  ],
+  "AndroidHardwareAcceleration": "false",
+  "iOSStatusBarStyle": "Default",
+  "Framework": "Cordova",
+  "WP8TileTitle": "",
+  "WP8Publisher": "",
+  "WP8Capabilities": [
+    "ID_CAP_NETWORKING",
+    "ID_CAP_WEBBROWSERCOMPONENT"
+  ],
+  "WP8Requirements": [],
+  "WP8PublisherID": "{61530ef4-acd9-443d-a15f-1bf4f803b416}",
+  "WP8ProductID": "{c832a0a7-db2d-4ee1-a675-3a2d64e2d476}",
+  "WPSdk": "8.0",
+  "WP8PackageIdentityName": "1234Telerik.EmbebidosII",
+  "WP8WindowsPublisherName": "CN=Telerik",
+  "WP8SupportedResolutions": [
+    "ID_RESOLUTION_WVGA",
+    "ID_RESOLUTION_WXGA",
+    "ID_RESOLUTION_HD720P"
+  ]
+}
