@@ -31,43 +31,32 @@ Author:
     
     <script type="text/javascript">
         
-        
-        if (window.openDatabase) {
-            var mydb = openDatabase("finance_db", "0.1", "SistemasEmbebidos", 1024 * 1024);
-            mydb.transaction(function (t) {
-                t.executeSql("CREATE TABLE IF NOT EXISTS cuentas (id INTEGER PRIMARY KEY ASC, nombre TEXT, monto INTEGER)");
-            });
+        function updateList(transaction, results) {
+            var listitems = "";
+            var listholder = document.getElementById("listacategorias");
 
-        } else {
-            alert("Lo sentimos. El sistema de datos no es compatible con su dispositivo.");
-        }
-        
-        function actualizarFormulario(){
-    		var movimiento=document.getElementById("tipo").value;
-            if (movimiento !== "transferencia"){
-                document.getElementById("beneficiario").hidden=false;
-                document.getElementById("destinatario").style.display="none";
-                document.getElementById("labelDestinatario").style.display="none";
-            }else{
-                document.getElementById("beneficiario").hidden=true;
-                document.getElementById("destinatario").style.display="block";
-                document.getElementById("labelDestinatario").style.display="block";
-            }
-        }
-        
-        function guardarMovimiento(){
-            var movimiento=document.getElementById("tipo").value;
-            if (movimiento == "ingreso"){
-            
-            }
-            if (movimiento == "gasto"){
+            listholder.innerHTML = "";
+
+            var i;
+            for (i = 0; i < results.rows.length; i++) {
+                var row = results.rows.item(i);
                 
+                listholder.innerHTML += "<tr><td>" + row.id + "</td><td>" + row.nombre + "</td><td> $ " + row.monto + "</td></tr>";
             }
-            if (movimiento == "transferencia"){
-                
+
+        }
+
+        function output() {
+            if (mydb) {
+                mydb.transaction(function (t) {
+                    t.executeSql("SELECT * FROM categorias", [], updateList);
+                });
+            } else {
+                alert("Datos no encontrados");
             }
         }
-        
+
+        output();
     </script>
     
 <!-- JS -->
@@ -181,7 +170,22 @@ Author:
                     <div class="main-grids">
                         <div class="top-grids">
                             <div class="recommended-info">
-                                <h3>Cuentas</h3>
+                                <h3>Categorias</h3>
+                                <div id="holder">
+                                    <br>
+                                    <h2>Tus Categorias</h2>
+                                    <br>
+                                    <table width="50%">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Cuenta</th>
+                                                <th>Saldo</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="listacategorias"></tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
