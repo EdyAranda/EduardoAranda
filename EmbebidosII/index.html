@@ -44,20 +44,20 @@ Author:
                 t.executeSql("CREATE TABLE IF NOT EXISTS cuentas (id INTEGER PRIMARY KEY ASC, nombre TEXT, monto INTEGER)");
                 t.executeSql("CREATE TABLE IF NOT EXISTS categorias (id INTEGER PRIMARY KEY ASC, nombre TEXT, monto INTEGER)");
                 t.executeSql("CREATE TABLE IF NOT EXISTS movimientos (id INTEGER PRIMARY KEY ASC, cuenta INTEGER, monto INTEGER, categoria TEXT, beneficiario TEXT, destinatario INTEGER, descripcion TEXT)");
-                t.executeSql("INSERT INTO categorias (nombre, monto) VALUES (?, ?)", ["comida", 0]);
-                t.executeSql("INSERT INTO categorias (nombre, monto) VALUES (?, ?)", ["despensa", 0]);
-                t.executeSql("INSERT INTO categorias (nombre, monto) VALUES (?, ?)", ["educacion", 0]);
-                t.executeSql("INSERT INTO categorias (nombre, monto) VALUES (?, ?)", ["entretenimiento", 0]);
-                t.executeSql("INSERT INTO categorias (nombre, monto) VALUES (?, ?)", ["impuesto", 0]);
-                t.executeSql("INSERT INTO categorias (nombre, monto) VALUES (?, ?)", ["mascota", 0]);
-                t.executeSql("INSERT INTO categorias (nombre, monto) VALUES (?, ?)", ["regalos", 0]);
-                t.executeSql("INSERT INTO categorias (nombre, monto) VALUES (?, ?)", ["salud", 0]);
-                t.executeSql("INSERT INTO categorias (nombre, monto) VALUES (?, ?)", ["servicios", 0]);
-                t.executeSql("INSERT INTO categorias (nombre, monto) VALUES (?, ?)", ["transporte", 0]);
-                t.executeSql("INSERT INTO categorias (nombre, monto) VALUES (?, ?)", ["vestimenta", 0]);
-                t.executeSql("INSERT INTO categorias (nombre, monto) VALUES (?, ?)", ["viajes", 0]);
-                t.executeSql("INSERT INTO categorias (nombre, monto) VALUES (?, ?)", ["otros", 0]);
-            });
+                t.executeSql("IF (SELECT * FROM categorias <= 0) BEGIN INSERT INTO categorias (nombre, monto) VALUES (?, ?) END", ["comida", 0]);
+                t.executeSql("IF (SELECT * FROM categorias <= 0) BEGIN INSERT INTO categorias (nombre, monto) VALUES (?, ?) END", ["despensa", 0]);
+                t.executeSql("IF (SELECT * FROM categorias <= 0) BEGIN INSERT INTO categorias (nombre, monto) VALUES (?, ?) END", ["educacion", 0]);
+                t.executeSql("IF (SELECT * FROM categorias <= 0) BEGIN INSERT INTO categorias (nombre, monto) VALUES (?, ?) END", ["entretenimiento",0]);
+                t.executeSql("IF (SELECT * FROM categorias <= 0) BEGIN INSERT INTO categorias (nombre, monto) VALUES (?, ?) END", ["impuesto", 0]);
+                t.executeSql("IF (SELECT * FROM categorias <= 0) BEGIN INSERT INTO categorias (nombre, monto) VALUES (?, ?) END", ["mascota", 0]);
+                t.executeSql("IF (SELECT * FROM categorias <= 0) BEGIN INSERT INTO categorias (nombre, monto) VALUES (?, ?) END", ["regalos", 0]);
+                t.executeSql("IF (SELECT * FROM categorias <= 0) BEGIN INSERT INTO categorias (nombre, monto) VALUES (?, ?) END", ["salud", 0]);
+                t.executeSql("IF (SELECT * FROM categorias <= 0) BEGIN INSERT INTO categorias (nombre, monto) VALUES (?, ?) END", ["servicios",0]);
+                t.executeSql("IF (SELECT * FROM categorias <= 0) BEGIN INSERT INTO categorias (nombre, monto) VALUES (?, ?) END", ["transporte", 0]);
+                t.executeSql("IF (SELECT * FROM categorias <= 0) BEGIN INSERT INTO categorias (nombre, monto) VALUES (?, ?) END", ["vestimenta", 0]);
+                t.executeSql("IF (SELECT * FROM categorias <= 0) BEGIN INSERT INTO categorias (nombre, monto) VALUES (?, ?) END", ["viajes",0]);
+                t.executeSql("IF (SELECT * FROM categorias <= 0) BEGIN INSERT INTO categorias (nombre, monto) VALUES (?, ?) END", ["otros", 0]);
+             });
 
         } else {
             alert("Lo sentimos. El sistema de datos no es compatible con su dispositivo.");

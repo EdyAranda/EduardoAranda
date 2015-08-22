@@ -29,11 +29,18 @@ Author:
 <script src="js/data.js"></script>
 <script src="js/drilldown.js"></script>
 <!-- JS -->
+<script type="text/javascript">
+    if (window.openDatabase) {
+        var mydb = openDatabase("finance_db", "0.1", "SistemasEmbebidos", 1024 * 1024);
+    } else {
+        alert("Lo sentimos. El sistema de datos no es compatible con su dispositivo.");
+    }
+</script>
 
 </head>
   <body style="padding-top: 0px;">
         <div class="col-sm-3 col-md-2 sidebar" style="top: 0px;">
-    <div class="top-navigation">
+			<div class="top-navigation">
 				<div class="t-menu">FINANCE PRO</div>
 				<div class="t-img">
 					<img src="images/lines.png" alt=" " />
@@ -68,48 +75,58 @@ Author:
 					<script type="text/javascript">
 						$(function () {
 						    $(document).ready(function () {
-						        // Build the chart
-						        $('#container').highcharts({
-						            chart: {
-						                type: 'pie'
-						            },
-						            title: {
-						                text: 'Resumen por categoria'
-						            },
-						            plotOptions: {
-						                pie: {
-						                    allowPointSelect: true,
-						                    cursor: 'pointer',
-						                    dataLabels: {
-						                        enabled: false
-						                    },
-						                    showInLegend: true
-						                }
-						            },
-						            series: [{
-						                name: "Categoria: ",
-						                colorByPoint: true,
-						                data: [{
-						                    name: "Microsoft Internet Explorer",
-						                    y: 56.33
-						                }, {
-						                    name: "Chrome",
-						                    y: 24.03
-						                }, {
-						                    name: "Firefox",
-						                    y: 10.38
-						                }, {
-						                    name: "Safari",
-						                    y: 4.77
-						                }, {
-						                    name: "Opera",
-						                    y: 0.91
-						                }, {
-						                    name: "Proprietary or Undetectable",
-						                    y: 0.2
-						                }]
-						            }]
-						        });
+						    	var result = [];
+						    	function output() {
+						    		var mydb = openDatabase("finance_db", "0.1", "SistemasEmbebidos", 1024 * 1024);
+							        if (mydb) {
+							        	mydb.transaction(function (t) {
+							                t.executeSql("SELECT * FROM categorias",[],updateCarList);
+							            });
+							        } else {
+							            alert("Datos no encontrados");
+							        }
+							    }
+							    function updateCarList(t,rs) {
+								    //initialise the listitems variable
+								    for(var i=0; i<rs.rows.length; i++) {
+								    	var row = rs.rows.item(i);
+						            	result[i] = { name: row['nombre'],y: row['monto']};
+						         	}
+						         	buildChart(result);
+								}
+								output();
+								function buildChart(resultado){
+									// Build the chart
+							        $('#container').highcharts({
+							            chart: {
+							                plotBackgroundColor: null,
+							                plotBorderWidth: null,
+							                plotShadow: false,
+							                type: 'pie'
+							            },
+							            title: {
+							                text: 'Resumen por categoria'
+							            },
+							            tooltip: {
+							                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+							            },
+							            plotOptions: {
+							                pie: {
+							                    allowPointSelect: true,
+							                    cursor: 'pointer',
+							                    dataLabels: {
+							                        enabled: false
+							                    },
+							                    showInLegend: true
+							                }
+							            },
+							            series: [{
+							                name: "Categoria: ",
+							                colorByPoint: true,
+							                data: resultado
+							            }]
+							        });
+								}
 						    });
 						});
 					</script>
