@@ -28,6 +28,80 @@ Author:
 <script src="js/highcharts.js"></script>
 <script src="js/data.js"></script>
 <script src="js/drilldown.js"></script>
+    
+    <script type="text/javascript">
+        
+        
+        if (window.openDatabase) {
+            var mydb = openDatabase("finance_db", "0.1", "SistemasEmbebidos", 1024 * 1024);
+            mydb.transaction(function (t) {
+                t.executeSql("CREATE TABLE IF NOT EXISTS cuentas (id INTEGER PRIMARY KEY ASC, nombre TEXT, monto INTEGER)");
+            });
+
+        } else {
+            alert("Lo sentimos. El sistema de datos no es compatible con su dispositivo.");
+        }
+        
+
+        function updateList(transaction, results) {
+            var listitems = "";
+            var listholder = document.getElementById("listacuentas");
+
+            listholder.innerHTML = "";
+
+            var i;
+            for (i = 0; i < results.rows.length; i++) {
+                var row = results.rows.item(i);
+
+                listholder.innerHTML += "<li>" + row.nombre + " - " + row.monto + " (<a href='javascript:void(0);' onclick='borrarCuenta(" + row.id + ");'>Borrar Cuenta</a>)";
+            }
+
+        }
+
+
+        function output() {
+            if (mydb) {
+                mydb.transaction(function (t) {
+                    t.executeSql("SELECT * FROM cuentas", [], updateList);
+                });
+            } else {
+                alert("Datos no encontrados");
+            }
+        }
+
+
+        function agregarCuenta() {
+            if (mydb) {
+                var nombre = document.getElementById("cuentanombre").value;
+                var monto = document.getElementById("cuentamonto").value;
+
+                if (nombre !== "" && monto !== "") {
+                    mydb.transaction(function (t) {
+                        t.executeSql("INSERT INTO cuentas (nombre, monto) VALUES (?, ?)", [nombre, monto]);
+                        output();
+                    });
+                } else {
+                    alert("Por favor ingrese algun dato");
+                }
+            } else {
+                alert("Datos no encontrados");
+            }
+        }
+
+
+        function borrarCuenta(id) {
+            if (mydb) {
+                mydb.transaction(function (t) {
+                    t.executeSql("DELETE FROM cuentas WHERE id=?", [id], output);
+                });
+            } else {
+                alert("Datos no encontrados");
+            }
+        }
+
+        output();
+      </script>
+    
 <!-- JS -->
 
 </head>
@@ -67,6 +141,21 @@ Author:
 				<div class="top-grids">
 					<div class="recommended-info">
 						<h3>Cuentas</h3>
+                        <div id="controls">
+                            <p>Agregar una cuenta</p>
+                            <label>Nombre:</label>
+                            <input type="text" id="cuentanombre" />
+                            <br />
+                            <label>Monto:</label>
+                            <input type="text" id="cuentamonto" />
+                            <br />
+                            <button type="button" id="agregar" onclick="agregarCuenta();">Agregar Cuenta</button>
+                        </div>
+                        <div id="holder">
+                             <h3>Tus Cuentas</h3>
+                            <ul id="listacuentas"></ul>
+                        </div>
+      
 					</div>
 				</div>
 			</div>
@@ -86,6 +175,6 @@ Author:
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="js/bootstrap.min.js"></script>
-    <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
+          <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
   </body>
 </html>
