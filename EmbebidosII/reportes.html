@@ -1,0 +1,139 @@
+<!--
+Author:
+	Eduardo Gonzalez
+	Eduardo Aranda
+	Miguel Sepulveda
+-->
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Finance Pro | Sistemas Embebidos II</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<script type="application/x-javascript">
+	addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } 
+</script>
+
+<!-- CSS -->
+<link href="css/bootstrap.min.css" rel='stylesheet' type='text/css' media="all" />
+<link href="css/dashboard.css" rel="stylesheet">
+<link href="css/style.css" rel='stylesheet' type='text/css' media="all" />
+<link href='css/openSans.css' rel='stylesheet' type='text/css'>
+<link href='css/poiret.css' rel='stylesheet' type='text/css'>
+<!-- CSS -->
+
+<!-- JS -->
+<script src="js/jquery-1.11.1.min.js"></script>
+<script src="js/highcharts.js"></script>
+<script src="js/data.js"></script>
+<script src="js/drilldown.js"></script>
+<!-- JS -->
+
+</head>
+  <body style="padding-top: 10px;">
+        <div class="col-sm-3 col-md-2 sidebar" style="top: 0px;">
+    <div class="top-navigation">
+				<div class="t-menu">FINANCE PRO</div>
+				<div class="t-img">
+					<img src="images/lines.png" alt=" " />
+				</div>
+				<div class="clearfix"> </div>
+			</div>
+				<div class="drop-navigation drop-navigation">
+				  <ul class="nav nav-sidebar">
+					<li class="active"><a href="index.html" class="home-icon"><span class="glyphicon glyphicon-home glyphicon-usd" aria-hidden="true"></span>Cuentas</a></li>
+					<li><a href="categorias.html" class="user-icon"><span class="glyphicon glyphicon-home glyphicon-tags" aria-hidden="true"></span>Categorias</a></li>
+					<li><a href="reportes.html" class="sub-icon"><span class="glyphicon glyphicon-home glyphicon-stats" aria-hidden="true"></span>Reportes</a></li>
+                    <li><a href="ayuda.html" class="sub-icon"><span class="glyphicon glyphicon-home glyphicon-hourglass" aria-hidden="true"></span>Ayuda</a></li>
+				  </ul>
+				  <!-- script-for-menu -->
+						<script>
+							$( ".top-navigation" ).click(function() {
+							$( ".drop-navigation" ).slideToggle( 300, function() {
+							// Animation complete.
+							});
+							});
+						</script>
+					<div class="side-bottom">
+						<div class="copyright">
+							<p> © 2015 Finance Pro | Sistemas Embebidos II</p>
+						</div>
+					</div>
+				</div>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" style="padding-top: 0px;" >
+			<div class="main-grids">
+				<div class="top-grids">
+					<script type="text/javascript">
+						$(function () {
+						    $(document).ready(function () {
+						        // Build the chart
+						        $('#container').highcharts({
+						            chart: {
+						                type: 'pie'
+						            },
+						            title: {
+						                text: 'Resumen por categoria'
+						            },
+						            plotOptions: {
+						                pie: {
+						                    allowPointSelect: true,
+						                    cursor: 'pointer',
+						                    dataLabels: {
+						                        enabled: false
+						                    },
+						                    showInLegend: true
+						                }
+						            },
+						            series: [{
+						                name: "Categoria: ",
+						                colorByPoint: true,
+						                data: [{
+						                    name: "Microsoft Internet Explorer",
+						                    y: 56.33
+						                }, {
+						                    name: "Chrome",
+						                    y: 24.03,
+						                    sliced: true,
+						                    selected: true
+						                }, {
+						                    name: "Firefox",
+						                    y: 10.38
+						                }, {
+						                    name: "Safari",
+						                    y: 4.77
+						                }, {
+						                    name: "Opera",
+						                    y: 0.91
+						                }, {
+						                    name: "Proprietary or Undetectable",
+						                    y: 0.2
+						                }]
+						            }]
+						        });
+						    });
+						});
+					</script>
+					<div id="container" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
+				</div>
+			</div>
+			<!-- footer -->
+			
+			<!-- //footer -->
+		</div>
+		<div class="clearfix"> </div>
+	<div class="drop-menu">
+		<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu4">
+		  <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Regular link</a></li>
+		  <li role="presentation" class="disabled"><a role="menuitem" tabindex="-1" href="#">Disabled link</a></li>
+		  <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Another link</a></li>
+		</ul>
+	</div>
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="js/bootstrap.min.js"></script>
+    <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
+  </body>
+</html>
