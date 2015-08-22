@@ -149,7 +149,7 @@ Author:
             }
         }
         
-        function guardarMovimiento(){
+        function guardarMovimiento() {
             var movimiento = document.getElementById("tipo").value;
             var mmonto = document.getElementById("cantidad").value;
             var mbeneficiario = document.getElementById("beneficiario").value;
@@ -169,9 +169,7 @@ Author:
         }
         
         function actualizarListaCuentas(transaction, results) {
-            var listitems = "";
             var listholder = document.getElementById("cuenta");
-
             listholder.innerHTML = "";
 
             var i;
@@ -180,8 +178,8 @@ Author:
                 
                 listholder.innerHTML += '<option value = " ' + row.nombre + ' "> ' + row.nombre + '</option>';
             }
+            
             listholder = document.getElementById("destinatario");
-
             listholder.innerHTML = "";
 
             var i;
@@ -194,11 +192,8 @@ Author:
         }
 
 		function actualizarListaCategorias(transaction, results) {
-            var listitems = "";
             var listholder = document.getElementById("categoria");
-
             listholder.innerHTML = "";
-
             var i;
             for (i = 0; i < results.rows.length; i++) {
                 var row = results.rows.item(i);
@@ -257,7 +252,7 @@ Author:
                         </div>
                 </div>
                             <div class="signin">
-                                <a href="#small-dialog2" class="play-icon popup-with-zoom-anim" onclick="actualizarListas()">Nuevo Movimiento</a>
+                                <a href="#small-dialog2" class="play-icon popup-with-zoom-anim" onclick="actualizarListas();">Nuevo Movimiento</a>
                                 <!-- pop-up-box -->
                                                 <script type="text/javascript" src="js/modernizr.custom.min.js"></script>    
                                                 <link href="css/popuo-box.css" rel="stylesheet" type="text/css" media="all" />
@@ -275,7 +270,7 @@ Author:
                                                                     </select>
                                                             <input type="text" class="email" placeholder="Beneficiario" maxlength="30" id="beneficiario"/>
                                                             <input type="text" class="email" placeholder="Cantidad" maxlength="10" pattern="[1-9]{1}\d{9}" title="Ingresa un numero valido" id="cantidad" />
-                                                            <label for="categoria">Categoria: </label>
+                                                            <label id="labelCategoria" for="categoria">Categoria: </label>
                                                                      <select id="categoria">
                                                                         <option value="">   </option>
                                                                     </select>
@@ -294,7 +289,7 @@ Author:
                                                         </form>
 
                                                         <div class="continue-button">
-                                                            <a href="#small-dialog3" class="hvr-shutter-out-horizontal play-icon popup-with-zoom-anim">Guardar</a>
+                                                            <a href="#small-dialog3" class="hvr-shutter-out-horizontal play-icon popup-with-zoom-anim" onclick="guardarMovimiento();">Guardar</a>
                                                         </div>
                                                     </div>
                                                     <div class="clearfix"> </div>
