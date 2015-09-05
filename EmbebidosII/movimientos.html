@@ -1,0 +1,172 @@
+<!--
+Author:
+	Eduardo Gonzalez
+	Eduardo Aranda
+	Miguel Sepulveda
+-->
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Finance Pro | Sistemas Embebidos II -prueba githu</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<script type="application/x-javascript">
+	addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } 
+</script>
+
+<!-- CSS -->
+<link href="css/bootstrap.min.css" rel='stylesheet' type='text/css' media="all" />
+<link href="css/dashboard.css" rel="stylesheet">
+<link href="css/style.css" rel='stylesheet' type='text/css' media="all" />
+<link href='css/openSans.css' rel='stylesheet' type='text/css'>
+<link href='css/poiret.css' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" type="text/css" href="css/styleA.css" />
+<!-- CSS -->
+
+<!-- JS -->
+<script src="js/jquery-1.11.1.min.js"></script>
+<script src="js/highcharts.js"></script>
+<script src="js/data.js"></script>
+<script src="js/drilldown.js"></script>
+<script type="text/javascript" src="js/modernizr.custom.29473.js"></script>
+<!-- JS -->
+
+</head>
+  <body>
+
+              <div class="col-sm-3 col-md-2 sidebar">
+                    <div class="top-navigation">
+                        <div class="t-menu">FINANCE PRO</div>
+                        <div class="t-img">
+                            <img src="images/lines.png" alt=" " />
+                        </div>
+                        <div class="clearfix"> </div>
+                    </div>
+                        <div class="drop-navigation drop-navigation">
+                          <ul class="nav nav-sidebar">
+                            <li><a href="index.html" class="home-icon"><span class="glyphicon glyphicon-home glyphicon-usd" aria-hidden="true"></span>Cuentas</a></li>
+                            <li><a href="categorias.html" class="user-icon"><span class="glyphicon glyphicon-home glyphicon-tags" aria-hidden="true"></span>Categorias</a></li>
+                            <li><a href="reportes.html" class="sub-icon"><span class="glyphicon glyphicon-home glyphicon-stats" aria-hidden="true"></span>Reportes</a></li>
+                            <li class="active"><a href="movimientos.html" class="sub-icon"><span class="glyphicon glyphicon-home glyphicon-hourglass" aria-hidden="true"></span>Movimientos</a></li>
+                          </ul>
+                          <!-- script-for-menu -->
+                                <script>
+                                    $( ".top-navigation" ).click(function() {
+                                    $( ".drop-navigation" ).slideToggle( 300, function() {
+                                    // Animation complete.
+                                    });
+                                    });
+                                </script>
+                            <div class="side-bottom">
+                                <div class="copyright">
+                                    <p> © 2015 Finance Pro | Sistemas Embebidos II</p>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+                            
+                            <div class="clearfix"> </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+			<div class="main-grids">
+				<div class="top-grids">
+					<div class="recommended-info">
+                        <script src="js/classie.js"></script>
+						
+                        <div id="holder">
+                        	<br>
+                            <h2>Tus Movimientos</h2>
+                            <br>
+                            <!--<table width="50%">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Tipo</th>
+                                        <th>Cuenta</th>
+                                        <th>Monto</th>
+                                        <th>Categoria</th>
+                                        <th>Beneficiario</th>
+                                        <th>Destinatario</th>
+                                        <th>Descripcion</th>
+                                    </tr>
+                                    <tr>
+                                        <td>asdas</td>
+                                        <td>asdas</td>
+                                        <td>12</td>
+                                        <td>as</td>
+                                        <td>1</td>
+                                        <td>223</td>
+                                        <td>vaas</td>
+                                        <td>jhhhhhh</td>
+                                    </tr>
+                                </thead>
+                                <tbody id="listamovimientos"></tbody>
+                            </table>-->
+                            <div class="container">
+                                <section class="ac-container" id="listamovimientos">
+                                    <div><input id='ac-"+i+"' name='accordion-1' type='radio' checked /><label for='ac-"+i+"'>"+tipo+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$&nbsp;"+monto+"</label><article class='ac-small'><p>"+desmadre+"</p></article></div>
+                                </section>
+                            </div>
+                        </div>
+      
+					</div>
+				</div>
+			</div>
+			<!-- footer -->
+			
+			<!-- //footer -->
+		</div>
+		<div class="clearfix"> </div>
+	<div class="drop-menu">
+		<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu4">
+		  <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Regular link</a></li>
+		  <li role="presentation" class="disabled"><a role="menuitem" tabindex="-1" href="#">Disabled link</a></li>
+		  <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Another link</a></li>
+		</ul>
+	</div>
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="js/bootstrap.min.js"></script>
+          <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
+    <script type="text/javascript">
+        
+        
+        if (window.openDatabase) {
+            var mydb = openDatabase("finance_db", "0.1", "SistemasEmbebidos", 2 * 1024 * 1024);
+        } else {
+            alert("Lo sentimos. El sistema de datos no es compatible con su dispositivo.");
+        }
+        
+
+        function updateList(transaction, results) {
+            var listitems = "";
+            var listholder = document.getElementById("listamovimientos");
+
+            listholder.innerHTML = "";
+
+            var i;
+            for (i = 0; i < results.rows.length; i++) {
+                var row = results.rows.item(i);
+                
+                /*listholder.innerHTML += "<tr><td>" + row.id + "</td><td>" + row.tipo + "</td><td> " + row.cuenta + "</td><td> $"+ row.monto + "</td><td>" + row.categoria + "</td><td> $ " + row.beneficiario + "</td><td>" + row.destinatario + "</td><td>" + row.descripcion+"</td><td><a href='javascript:void(0);' onclick='borrarCuenta(" + row.id + ");' >Borrar Cuenta</a></td></tr>";*/
+                listholder.innerHTML += "<div><input id='ac-"+i+"' name='accordion-1' type='radio' checked /><label for='ac-"+i+"'>"+row.descripcion+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$&nbsp;"+row.monto+"</label><article class='ac-small'><p>Tipo movimiento: "+row.tipo+"<br>Cuenta: "+row.cuenta+"<br>Categoria: "+row.categoria+"<br>Beneficiario: "+row.beneficiario+"</p></article></div>"
+            }
+
+        }
+
+        function output() {
+            if (mydb) {
+                mydb.transaction(function (t) {
+                    t.executeSql("SELECT * FROM movimientos", [], updateList);
+                });
+            } else {
+                alert("Datos no encontrados");
+            }
+        }
+
+        output();
+
+      </script>
+  </body>
+</html>
