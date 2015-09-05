@@ -104,11 +104,11 @@ Author:
                                                                         <option value="">    </option>
                                                             		</select>
                                                             <br>
-                                                           <input type="text" class="email" placeholder="Descripcion" maxlength="200"/> 
+                                                           <input type="text" id="descripcion" class="email" placeholder="Descripcion" maxlength="200"/> 
                                                         </form>
 
                                                         <div class="continue-button">
-                                                            <a href="#small-dialog3" class="hvr-shutter-out-horizontal play-icon popup-with-zoom-anim" onclick="guardarMovimiento();">Guardar</a>
+                                                            <button onClick="guardarMovimiento();">Guardar </button>
                                                         </div>
                                                     </div>
                                                     <div class="clearfix"> </div>
@@ -349,30 +349,31 @@ Author:
         
         function guardarMovimiento() {
             var movimiento = document.getElementById("tipo").value;
-            var mmonto = document.getElementById("cantidad").value;
-            var mbeneficiario = document.getElementById("beneficiario").value;
+			var mmonto = document.getElementById("cantidad").value;
             var mcuenta = document.getElementById("cuenta").value;
-            var mdestinatario = document.getElementById("destinatario").value;
-            var mcategoria = document.getElementById("categoria").value;
             var mdescripcion = document.getElementById("descripcion").value;
             if (movimiento == "ingreso"){
-                 if (mydb) {
-                     	window.alert("13");
+                var mbeneficiario = document.getElementById("beneficiario").value;
+                if (mydb) {
                 		mydb.transaction(function (t) {
-            	 		t.executeSql("INSERT INTO movimientos (tipo, cuenta, monto, beneficiario, descripcion) VALUES (?, ?, ?, ?, ?)", [movimiento, mcuenta, mmonto, mbeneficiario, mdescripcion]);
-                 		t.executeSql("UDPATE cuentas SET monto += ? WHERE nombre =?",[mmonto, mcuenta]);
+                            alert(mbeneficiario);
+                            t.executeSql("INSERT INTO movimientos (tipo, cuenta, monto, beneficiario, descripcion) VALUES (?, ?, ?, ?, ?)", [movimiento, mcuenta, mmonto, mbeneficiario, mdescripcion]);
+                            t.executeSql("UDPATE cuentas SET monto += ? WHERE nombre =?",[mmonto, mcuenta]);
                         });
             	}
             }else{
             	if (movimiento == "gasto"){
+                    var mcategoria = document.getElementById("categoria").value;
+                    var mbeneficiario2 = document.getElementById("beneficiario").value;
                 	 if (mydb) {
                 		mydb.transaction(function (t) {
-            	 		t.executeSql("INSERT INTO movimientos (tipo, cuenta, monto, beneficiario, descripcion) VALUES (?, ?, ?, ?, ?)", [movimiento, mcuenta, mmonto, mbeneficiario, mdescripcion]);
+            	 		t.executeSql("INSERT INTO movimientos (tipo, cuenta, monto, beneficiario, descripcion) VALUES (?, ?, ?, ?, ?)", [movimiento, mcuenta, mmonto, mbeneficiario2, mdescripcion]);
                  		t.executeSql("UDPATE cuentas SET monto -= ? WHERE nombre =?",[mmonto, mcuenta]);
                         });
             		}
             	}else{
                    	if (movimiento == "transferencia"){
+                        var mdestinatario = document.getElementById("destinatario").value;
                 		 if (mydb) {
                             mydb.transaction(function (t) {
                             t.executeSql("INSERT INTO movimientos (tipo, cuenta, monto, destinatario, descripcion) VALUES (?, ?, ?, ?, ?)", [movimiento, mcuenta, mmonto, mdestinatario, mdescripcion]);
