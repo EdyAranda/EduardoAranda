@@ -239,22 +239,22 @@ Author:
         if (window.openDatabase) {
             var mydb = openDatabase("finance_db", "0.1", "SistemasEmbebidos", 1024 * 1024);
             mydb.transaction(function (t) {
-                t.executeSql("CREATE TABLE cuentas (id INTEGER PRIMARY KEY ASC, nombre TEXT, monto INTEGER)");
-                t.executeSql("CREATE TABLE categorias (id INTEGER PRIMARY KEY ASC, nombre TEXT, monto INTEGER)");
-                t.executeSql("CREATE TABLE movimientos (id INTEGER PRIMARY KEY ASC, tipo TEXT, cuenta TEXT, monto INTEGER, categoria TEXT, beneficiario TEXT, destinatario TEXT, descripcion TEXT)");
-                t.executeSql("INSERT INTO categorias (nombre, monto) VALUES (?, ?) ", ["comida", 0]);
-                t.executeSql("INSERT INTO categorias (nombre, monto) VALUES (?, ?) ", ["despensa", 0]);
-                t.executeSql("INSERT INTO categorias (nombre, monto) VALUES (?, ?) ", ["educacion", 0]);
-                t.executeSql("INSERT INTO categorias (nombre, monto) VALUES (?, ?) ", ["entretenimiento",0]);
-                t.executeSql("INSERT INTO categorias (nombre, monto) VALUES (?, ?) ", ["impuesto", 0]);
-                t.executeSql("INSERT INTO categorias (nombre, monto) VALUES (?, ?) ", ["mascota", 0]);
-                t.executeSql("INSERT INTO categorias (nombre, monto) VALUES (?, ?) ", ["regalos", 0]);
-                t.executeSql("INSERT INTO categorias (nombre, monto) VALUES (?, ?) ", ["salud", 0]);
-                t.executeSql("INSERT INTO categorias (nombre, monto) VALUES (?, ?) ", ["servicios",0]);
-                t.executeSql("INSERT INTO categorias (nombre, monto) VALUES (?, ?) ", ["transporte", 0]);
-                t.executeSql("INSERT INTO categorias (nombre, monto) VALUES (?, ?) ", ["vestimenta", 0]);
-                t.executeSql("INSERT INTO categorias (nombre, monto) VALUES (?, ?) ", ["viajes",0]);
-                t.executeSql("INSERT INTO categorias (nombre, monto) VALUES (?, ?) ", ["otros", 0]);
+                t.executeSql("CREATE TABLE IF NOT EXISTS cuentas (id INTEGER PRIMARY KEY ASC, nombre TEXT, monto INTEGER)");
+                t.executeSql("CREATE TABLE IF NOT EXISTS categorias (id INTEGER PRIMARY KEY ASC, nombre TEXT, monto INTEGER)");
+                t.executeSql("CREATE TABLE IF NOT EXISTS movimientos (id INTEGER PRIMARY KEY ASC, tipo TEXT, cuenta TEXT, monto INTEGER, categoria TEXT, beneficiario TEXT, destinatario TEXT, descripcion TEXT)");
+                t.executeSql("INSERT IGNORE INTO categorias (nombre, monto) VALUES (?, ?) ", ["comida", 0]);
+                t.executeSql("INSERT IGNORE INTO categorias (nombre, monto) VALUES (?, ?) ", ["despensa", 0]);
+                t.executeSql("INSERT IGNORE INTO categorias (nombre, monto) VALUES (?, ?) ", ["educacion", 0]);
+                t.executeSql("INSERT IGNORE INTO categorias (nombre, monto) VALUES (?, ?) ", ["entretenimiento",0]);
+                t.executeSql("INSERT IGNORE INTO categorias (nombre, monto) VALUES (?, ?) ", ["impuesto", 0]);
+                t.executeSql("INSERT IGNORE INTO categorias (nombre, monto) VALUES (?, ?) ", ["mascota", 0]);
+                t.executeSql("INSERT IGNORE INTO categorias (nombre, monto) VALUES (?, ?) ", ["regalos", 0]);
+                t.executeSql("INSERT IGNORE INTO categorias (nombre, monto) VALUES (?, ?) ", ["salud", 0]);
+                t.executeSql("INSERT IGNORE INTO categorias (nombre, monto) VALUES (?, ?) ", ["servicios",0]);
+                t.executeSql("INSERT IGNORE INTO categorias (nombre, monto) VALUES (?, ?) ", ["transporte", 0]);
+                t.executeSql("INSERT IGNORE INTO categorias (nombre, monto) VALUES (?, ?) ", ["vestimenta", 0]);
+                t.executeSql("INSERT IGNORE INTO categorias (nombre, monto) VALUES (?, ?) ", ["viajes",0]);
+                t.executeSql("INSERT IGNORE INTO categorias (nombre, monto) VALUES (?, ?) ", ["otros", 0]);
              });
 
         } else {
