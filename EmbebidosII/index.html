@@ -301,11 +301,11 @@ Author:
 				
                 if (nombre !== "" && monto !== "") {
                     mydb.transaction(function (t) {
-                        t.executeSql("INSERT INTO cuentas (nombre, monto) VALUES (?,?)", [nombre, monto]);
-                        output();
-                        
-                    });
-                    
+                        t.executeSql("INSERT INTO cuentas (nombre, monto) VALUES ('"+nombre+"',"+monto+")",[],onSuccessExecuteSql,onError);
+                    },
+                    onError,
+                    onReadyTransaction);
+                    output();
                 } else {
                     alert("Por favor ingrese algun dato");
                 }
@@ -316,12 +316,17 @@ Author:
 
 
         function borrarCuenta(id) {
-            if (mydb) {
-                mydb.transaction(function (t) {
-                    t.executeSql("DELETE FROM cuentas WHERE id=?", [id], output);
-                });
-            } else {
-                alert("Datos no encontrados");
+            if(confirm("Desea eliminar cuenta?")){
+                if (mydb) {
+                    mydb.transaction(function (t) {
+                        t.executeSql("DELETE FROM cuentas WHERE id="+id+"",[],onSuccessExecuteSql,onError);
+                    },
+                    onError,
+                    onReadyTransaction);
+                    output();
+                } else {
+                    alert("Datos no encontrados");
+                }
             }
         }
 
@@ -390,7 +395,9 @@ Author:
                                 t.executeSql("INSERT INTO movimientos (tipo, cuenta, monto, categoria, beneficiario, destinatario, descripcion) VALUES ('"+movimiento.trim()+"','"+mcuenta.trim()+"',"+mmonto.trim()+",'','','"+mdestinatario.trim()+"','"+mdescripcion.trim()+"')",[],onSuccessExecuteSql,onError);
                                 t.executeSql("UPDATE cuentas SET monto=monto-"+mmonto+" WHERE nombre ='"+mcuenta+"'",[],onSuccessExecuteSql,onError);
                                 t.executeSql("UPDATE cuentas SET monto=monto+"+mmonto+" WHERE nombre ='"+mdestinatario+"'",[],onSuccessExecuteSql,onError);
-                                });
+                                },
+                                onError,
+                                onReadyTransaction);
                             }
                         }
                     }
@@ -404,7 +411,7 @@ Author:
 		console.log( 'Transaction completed' )
 	}
 	function onSuccessExecuteSql( tx, results ){
-		console.log( 'Execute SQL completed' )
+		alert( 'Transaccion exitosa!' )
 	} 
 	function onError( err ){
 		console.log( err )
