@@ -104,11 +104,11 @@ Author:
                                                                         <option value="">    </option>
                                                             		</select>
                                                             <br>
-                                                           <input type="text" class="email" placeholder="Descripcion" maxlength="200"/> 
+                                                           <input type="text" id="descripcion" class="email" placeholder="Descripcion" maxlength="200"/> 
                                                         </form>
 
                                                         <div class="continue-button">
-                                                            <a href="#small-dialog3" class="hvr-shutter-out-horizontal play-icon popup-with-zoom-anim" onclick="guardarMovimiento();">Guardar</a>
+                                                            <button onClick="guardarMovimiento();">Guardar </button>
                                                         </div>
                                                     </div>
                                                     <div class="clearfix"> </div>
@@ -239,22 +239,22 @@ Author:
         if (window.openDatabase) {
             var mydb = openDatabase("finance_db", "0.1", "SistemasEmbebidos", 1024 * 1024);
             mydb.transaction(function (t) {
-                t.executeSql("CREATE TABLE cuentas (id INTEGER PRIMARY KEY ASC, nombre TEXT, monto INTEGER)");
-                t.executeSql("CREATE TABLE categorias (id INTEGER PRIMARY KEY ASC, nombre TEXT, monto INTEGER)");
-                t.executeSql("CREATE TABLE movimientos (id INTEGER PRIMARY KEY ASC, cuenta INTEGER, monto INTEGER, categoria TEXT, beneficiario TEXT, destinatario INTEGER, descripcion TEXT)");
-                t.executeSql("INSERT INTO categorias (nombre, monto) VALUES (?, ?) ", ["comida", 0]);
-                t.executeSql("INSERT INTO categorias (nombre, monto) VALUES (?, ?) ", ["despensa", 0]);
-                t.executeSql("INSERT INTO categorias (nombre, monto) VALUES (?, ?) ", ["educacion", 0]);
-                t.executeSql("INSERT INTO categorias (nombre, monto) VALUES (?, ?) ", ["entretenimiento",0]);
-                t.executeSql("INSERT INTO categorias (nombre, monto) VALUES (?, ?) ", ["impuesto", 0]);
-                t.executeSql("INSERT INTO categorias (nombre, monto) VALUES (?, ?) ", ["mascota", 0]);
-                t.executeSql("INSERT INTO categorias (nombre, monto) VALUES (?, ?) ", ["regalos", 0]);
-                t.executeSql("INSERT INTO categorias (nombre, monto) VALUES (?, ?) ", ["salud", 0]);
-                t.executeSql("INSERT INTO categorias (nombre, monto) VALUES (?, ?) ", ["servicios",0]);
-                t.executeSql("INSERT INTO categorias (nombre, monto) VALUES (?, ?) ", ["transporte", 0]);
-                t.executeSql("INSERT INTO categorias (nombre, monto) VALUES (?, ?) ", ["vestimenta", 0]);
-                t.executeSql("INSERT INTO categorias (nombre, monto) VALUES (?, ?) ", ["viajes",0]);
-                t.executeSql("INSERT INTO categorias (nombre, monto) VALUES (?, ?) ", ["otros", 0]);
+                t.executeSql("CREATE TABLE IF NOT EXISTS cuentas (id INTEGER PRIMARY KEY ASC, nombre TEXT, monto INTEGER)");
+                t.executeSql("CREATE TABLE IF NOT EXISTS categorias (id INTEGER PRIMARY KEY ASC, nombre TEXT, monto INTEGER)");
+                t.executeSql("CREATE TABLE IF NOT EXISTS movimientos (id INTEGER PRIMARY KEY ASC, tipo TEXT, cuenta TEXT, monto INTEGER, categoria TEXT, beneficiario TEXT, destinatario TEXT, descripcion TEXT)");
+                t.executeSql("INSERT IGNORE INTO categorias (nombre, monto) VALUES (?, ?) ", ["comida", 0]);
+                t.executeSql("INSERT IGNORE INTO categorias (nombre, monto) VALUES (?, ?) ", ["despensa", 0]);
+                t.executeSql("INSERT IGNORE INTO categorias (nombre, monto) VALUES (?, ?) ", ["educacion", 0]);
+                t.executeSql("INSERT IGNORE INTO categorias (nombre, monto) VALUES (?, ?) ", ["entretenimiento",0]);
+                t.executeSql("INSERT IGNORE INTO categorias (nombre, monto) VALUES (?, ?) ", ["impuesto", 0]);
+                t.executeSql("INSERT IGNORE INTO categorias (nombre, monto) VALUES (?, ?) ", ["mascota", 0]);
+                t.executeSql("INSERT IGNORE INTO categorias (nombre, monto) VALUES (?, ?) ", ["regalos", 0]);
+                t.executeSql("INSERT IGNORE INTO categorias (nombre, monto) VALUES (?, ?) ", ["salud", 0]);
+                t.executeSql("INSERT IGNORE INTO categorias (nombre, monto) VALUES (?, ?) ", ["servicios",0]);
+                t.executeSql("INSERT IGNORE INTO categorias (nombre, monto) VALUES (?, ?) ", ["transporte", 0]);
+                t.executeSql("INSERT IGNORE INTO categorias (nombre, monto) VALUES (?, ?) ", ["vestimenta", 0]);
+                t.executeSql("INSERT IGNORE INTO categorias (nombre, monto) VALUES (?, ?) ", ["viajes",0]);
+                t.executeSql("INSERT IGNORE INTO categorias (nombre, monto) VALUES (?, ?) ", ["otros", 0]);
              });
 
         } else {
@@ -349,20 +349,40 @@ Author:
         
         function guardarMovimiento() {
             var movimiento = document.getElementById("tipo").value;
-            var mmonto = document.getElementById("cantidad").value;
-            var mbeneficiario = document.getElementById("beneficiario").value;
+			var mmonto = document.getElementById("cantidad").value;
             var mcuenta = document.getElementById("cuenta").value;
-            var mdestinatario = document.getElementById("destinatario").value;
-            var mcategoria = document.getElementById("categoria").value;
             var mdescripcion = document.getElementById("descripcion").value;
-            if (movimiento == "ingreso"){  
-            
-            }
-            if (movimiento == "gasto"){
-                
-            }
-            if (movimiento == "transferencia"){
-                
+            if (movimiento == "ingreso"){
+                var mbeneficiario = document.getElementById("beneficiario").value;
+                if (mydb) {
+                		mydb.transaction(function (t) {
+                            alert(mbeneficiario);
+                            t.executeSql("INSERT INTO movimientos (tipo, cuenta, monto, beneficiario, descripcion) VALUES (?, ?, ?, ?, ?)", [movimiento, mcuenta, mmonto, mbeneficiario, mdescripcion]);
+                            t.executeSql("UDPATE cuentas SET monto += ? WHERE nombre =?",[mmonto, mcuenta]);
+                        });
+            	}
+            }else{
+            	if (movimiento == "gasto"){
+                    var mcategoria = document.getElementById("categoria").value;
+                    var mbeneficiario2 = document.getElementById("beneficiario").value;
+                	 if (mydb) {
+                		mydb.transaction(function (t) {
+            	 		t.executeSql("INSERT INTO movimientos (tipo, cuenta, monto, beneficiario, descripcion) VALUES (?, ?, ?, ?, ?)", [movimiento, mcuenta, mmonto, mbeneficiario2, mdescripcion]);
+                 		t.executeSql("UDPATE cuentas SET monto -= ? WHERE nombre =?",[mmonto, mcuenta]);
+                        });
+            		}
+            	}else{
+                   	if (movimiento == "transferencia"){
+                        var mdestinatario = document.getElementById("destinatario").value;
+                		 if (mydb) {
+                            mydb.transaction(function (t) {
+                            t.executeSql("INSERT INTO movimientos (tipo, cuenta, monto, destinatario, descripcion) VALUES (?, ?, ?, ?, ?)", [movimiento, mcuenta, mmonto, mdestinatario, mdescripcion]);
+                            t.executeSql("UDPATE cuentas SET monto -= ? WHERE nombre =?",[mmonto, mcuenta]);
+                            t.executeSql("UDPATE cuentas SET monto += ? WHERE nombre =?",[mmonto, mdestinatario]);
+                            });
+		            	}
+            		}
+                }
             }
         }
         
